@@ -145,20 +145,11 @@ db.collection(u'Top 5 DPS List').document(u'Specializations').set(dps_Data)
 ### I had to change Enhancement Shaman to EnhancementShaman to get it to work.
 db.collection('Top 5 DPS List').document('Specializations').update({"EnhancementShaman" : 18900})
 
+# def updateDPS():
 
-## Query all Classes with all Specializations
-# all_specializations = db.collection("classes").get()
-# for result in all_specializations:
-#    data = result.to_dict()
-#    print(f"Class: {result.id}")
-#    print(f"Specializations: {data}")
 
-## Query a specific class with each specialization
-# result1 = db.collection("classes").where("Druid", ">=", 0).get()
-# for specializations in result1:
-#     data = specializations.to_dict()
-#     print(f"Class: {specializations.id}")
-#     print(f"Specialization: {data}")
+
+
 
 ## Display Classes with their Specializations
 #classes_ref = db.collection(u'classes')
