@@ -138,29 +138,52 @@ dps_Data = {u'EnhancementShaman': 0,
             u'ElementalShaman': 0, 
             u'FireMage': 0}
 db.collection(u'Top 5 DPS List').document(u'Specializations').set(dps_Data)
+## Update Enhancement Shamans DPS value
+db.collection('Top 5 DPS List').document('Specializations').update({"EnhancementShaman" : 18900})
+## Update the rest of the values
+db.collection('Top 5 DPS List').document('Specializations').update({"BalanceDruid" : 18097})
+db.collection('Top 5 DPS List').document('Specializations').update({"FrostMage" : 17896})
+db.collection('Top 5 DPS List').document('Specializations').update({"ElementalShaman" : 17642})
+db.collection('Top 5 DPS List').document('Specializations').update({"FireMage" : 17619})
+
+## Delete Frost Mage from the DPS List
+db.collection("Top 5 DPS List").document("Specializations").update({"FrostMage" : firestore.DELETE_FIELD})
+
+## Add Unholy Death Knight to the DPS List
+db.collection("Top 5 DPS List").document("Specializations").update({"UnholyDeathKnight" : 16737})
+
+## Attempt at simple interface
+# userResponse = 0
+# while userResponse != 4:
+#     print("1. View Classes with Specialization\n2. View Top 5 DPS\n3. Update Top DPS Damage Value")
+#     userResponse = input("Input Selection \n>")
+#     if userResponse == 1:
+#         ## Display Classes with their Specializations
+#         classes_ref = db.collection(u'classes')
+#         docs = classes_ref.stream()
+
+#         for doc in docs:
+#             print(f'{doc.id} => {doc.to_dict()}')
+
+#         # Display Roles with their associated classes
+#         roles_ref = db.collection(u'roles')
+#         docs = roles_ref.stream()
+#     elif userResponse == 2:
+#         topDPS_ref = db.collection(u'Top 5 DPS List')
+#         docs = classes_ref.stream()
+
+#         for doc in docs:
+#             print(f'{doc.id} => {doc.to_dict()}')
+#     else:
+#         print("Invalid Response")
 
 ## Updates the top DPS with best single target damage.
 ### When updating the data or for this case the single target damage
 ### you can't have non alpha numeric characters in the name.
 ### I had to change Enhancement Shaman to EnhancementShaman to get it to work.
-db.collection('Top 5 DPS List').document('Specializations').update({"EnhancementShaman" : 18900})
 
 # def updateDPS():
 
-
-
-
-
-## Display Classes with their Specializations
-#classes_ref = db.collection(u'classes')
-#docs = classes_ref.stream()
-
-#for doc in docs:
-#    print(f'{doc.id} => {doc.to_dict()}')
-
-## Display Roles with their associated classes
-#roles_ref = db.collection(u'roles')
-#docs = roles_ref.stream()
 
 #for doc in docs:
 #    print(f'{doc.id} => {doc.to_dict()}')
