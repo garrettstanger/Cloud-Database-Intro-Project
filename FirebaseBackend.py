@@ -82,9 +82,8 @@ doc_ref.set({
     u'Arms Warrior', u'Fury Warrior']
 })
 
-## The Top DPS List collection will be dynamic because
-## the list will could change with each patch. This is where
-## I will implement the insert, modify, and delete ability.
+## The Top DPS List collection, starts with adding a small
+## dps_Data dictionary.
 dps_Data = {u'enhancementshaman': 0,
             u'balancedruid': 0,
             u'frostmage': 0,
@@ -103,10 +102,10 @@ db.collection('Top DPS List').document('Specializations').update({"elementalsham
 db.collection('Top DPS List').document('Specializations').update({"firemage" : 17619})
 
 ## Delete Frost Mage from the DPS List
-db.collection("Top DPS List").document("Specializations").update({"frostmage" : firestore.DELETE_FIELD})
+#db.collection("Top DPS List").document("Specializations").update({"frostmage" : firestore.DELETE_FIELD})
 
 ## Add Unholy Death Knight to the DPS List
-db.collection("Top DPS List").document("Specializations").update({"unholydeathknight" : 16737})
+#db.collection("Top DPS List").document("Specializations").update({"unholydeathknight" : 16737})
 
 ## Query for Classes with their specializations
 def displayClasses():
@@ -139,7 +138,25 @@ def updateDPS():
         db.collection("Top DPS List").document("Specializations").update({user_input_DPS_change : user_input_damage_change})
         print(f"{user_input_DPS_change} class updated with {user_input_damage_change} single target damage.")
     else:
-        print("Invalid Entry")
+        print("Invalid Entry: CHECK YOUR SPELLING")
+## Delete DPS function
+def deleteDPS():
+    user_input_DPS_delete = input("DPS to delete \n> ").lower().replace(" ","")
+    exceptions = ['blooddeathknight','unholydeathknight','frostdeathknight',
+    'havocdemonhunter', 'vengeancedemonhunter','balancedruid','feraldruid',
+    'guardiandruid','restorationdruid','marksmanshiphunter','beastmasteryhunter',
+    'survivalhunter','frostmage','arcanemage','firemage','windwalkermonk',
+    'mistweavermonk','brewmastermonk','holypaladin','retributionpaladin',
+    'protectionpaladin','holypriest','shadowpriest','disciplinepriest',
+    'assassinationrogue','outlawrogue','subletyrogue','elementalshaman',
+    'enhancementshaman','restorationshaman','destructionwarlock','demonologywarlock',
+    'afflictionwarlock','protectionwarrior','furywarrior','armswarrior']
+    if user_input_DPS_delete in exceptions:
+        db.collection("Top DPS List").document("Specializations").update({user_input_DPS_delete : firestore.DELETE_FIELD})
+        print(f"{user_input_DPS_delete} removed from Top DPS List.")
+    else:
+        print("Invalid Entry: CHECK YOUR SPELLING")
+
 
     
 
@@ -150,13 +167,15 @@ def displayRoles():
     for doc in docs:
         print(f'{doc.id} => {doc.to_dict()}')
 ## Attempt at simple interface
-userResponse = 0
-while userResponse != "5":
+userResponse = 999
+while userResponse != "0":
+    print("0. Quit")
     print("1. View Classes with Specialization")
     print("2. Display Roles")
     print("3. View Top DPS")
-    print("4. Add/Update Top DPS")
-    print("5. Quit")
+    print("4. Add/Update Top DPS class")
+    print("5. Remove Top DPS class")
+    
     userResponse = input("Input Selection \n> ")
     if userResponse == "1":
         displayClasses()
@@ -166,8 +185,10 @@ while userResponse != "5":
         displayTopDPS()
     elif userResponse == "4":
         updateDPS()
-    elif userResponse == "5":
+    elif userResponse == "0":
         pass
+    elif userResponse == "5":
+        deleteDPS()
     else:
         print("Invalid Response")
         
