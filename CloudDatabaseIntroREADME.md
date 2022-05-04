@@ -1,6 +1,7 @@
 # Overview
 
-{Important!  Do not say in this section that this is college assignment.  Talk about what you are trying to accomplish as a software engineer to further your learning.}
+This is a little introduction to a Cloud Database where I have 
+stored some data about the classes and specializations from the MMO World of Warcraft.
 
 {Provide a description the software that you wrote and how it integrates with a Cloud Database.  Describe how to use your program.}
 

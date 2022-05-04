@@ -84,22 +84,22 @@ doc_ref.set({
 
 ## The Top DPS List collection, starts with adding a small
 ## dps_Data dictionary.
-dps_Data = {u'enhancementshaman': 0,
-            u'balancedruid': 0,
-            u'frostmage': 0,
-            u'elementalshaman': 0, 
-            u'firemage': 0}
-db.collection(u'Top DPS List').document(u'Specializations').set(dps_Data)
-## Update Enhancement Shamans DPS value
-### When updating the data or for this case the single target damage
-### you can't have non alpha numeric characters in the name.
-### I had to change Enhancement Shaman to EnhancementShaman to get it to work.
-db.collection('Top DPS List').document('Specializations').update({"enhancementshaman" : 18900})
-## Update the rest of the values
-db.collection('Top DPS List').document('Specializations').update({"balancedruid" : 18097})
-db.collection('Top DPS List').document('Specializations').update({"frostmage" : 17896})
-db.collection('Top DPS List').document('Specializations').update({"elementalshaman" : 17642})
-db.collection('Top DPS List').document('Specializations').update({"firemage" : 17619})
+# dps_Data = {u'enhancementshaman': 0,
+#             u'balancedruid': 0,
+#             u'frostmage': 0,
+#             u'elementalshaman': 0, 
+#             u'firemage': 0}
+# db.collection(u'Top DPS List').document(u'Specializations').set(dps_Data)
+# ## Update Enhancement Shamans DPS value
+# ### When updating the data or for this case the single target damage
+# ### you can't have non alpha numeric characters in the name.
+# ### I had to change Enhancement Shaman to EnhancementShaman to get it to work.
+# db.collection('Top DPS List').document('Specializations').update({"enhancementshaman" : 18900})
+# ## Update the rest of the values
+# db.collection('Top DPS List').document('Specializations').update({"balancedruid" : 18097})
+# db.collection('Top DPS List').document('Specializations').update({"frostmage" : 17896})
+# db.collection('Top DPS List').document('Specializations').update({"elementalshaman" : 17642})
+# db.collection('Top DPS List').document('Specializations').update({"firemage" : 17619})
 
 ## Delete Frost Mage from the DPS List
 #db.collection("Top DPS List").document("Specializations").update({"frostmage" : firestore.DELETE_FIELD})
