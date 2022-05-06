@@ -1,4 +1,5 @@
 from abc import update_abstractmethods
+from re import L
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
@@ -9,7 +10,6 @@ firebase_admin.initialize_app(cred)
 # Create the database
 db = firestore.client()
 ## The Classes collection will probably remain static.
-## I can query the specializtions for a class.
 doc_ref = db.collection(u'classes').document(u'Warrior')
 doc_ref.set({
     u'specializations': [u'Protection', u'Fury', u'Arms' ]
@@ -82,6 +82,117 @@ doc_ref.set({
     u'Arms Warrior', u'Fury Warrior']
 })
 
+## Query for Classes with their specializations
+def displayClasses(db):
+    ## Display Classes with their Specializations
+        classes_ref = db.collection(u'classes')
+        docs = classes_ref.stream()
+        for doc in docs:
+            print(f'{doc.id} => {doc.to_dict()}')
+
+## View Top DPS
+def displayTopDPS(db):
+        topDPS_ref = db.collection(u'Top DPS List')
+        docs = topDPS_ref.stream()
+        for doc in docs:
+            print(f'{doc.id} => {doc.to_dict()}')
+## Update DPS function
+def updateDPS(db):
+    dps_spec = input("DPS to update \n> ").lower().replace(" ", "")
+    damage = float(input("Updated damage value \n> "))
+    dps_role = str(input("Role of Specialization (Tank, DPS, Healer)\n> "))
+    data = {"damage" : damage, "dps_role" : dps_role}
+    exceptions = ['blooddeathknight','unholydeathknight','frostdeathknight',
+    'havocdemonhunter', 'vengeancedemonhunter','balancedruid','feraldruid',
+    'guardiandruid','restorationdruid','marksmanshiphunter','beastmasteryhunter',
+    'survivalhunter','frostmage','arcanemage','firemage','windwalkermonk',
+    'mistweavermonk','brewmastermonk','holypaladin','retributionpaladin',
+    'protectionpaladin','holypriest','shadowpriest','disciplinepriest',
+    'assassinationrogue','outlawrogue','subletyrogue','elementalshaman',
+    'enhancementshaman','restorationshaman','destructionwarlock','demonologywarlock',
+    'afflictionwarlock','protectionwarrior','furywarrior','armswarrior']
+    if dps_spec in exceptions:
+        db.collection("Top DPS List").document(dps_spec).set(data)
+        change_notification(db, f"{dps_spec} class updated with {damage} single target damage.")
+    else:
+        print("Invalid Entry: CHECK YOUR SPELLING")
+## Delete DPS function
+def deleteDPS(db):
+    dps_spec = input("Select Class \n> ").lower().replace(" ","")
+    user_delete = input("Remove dps_role or damage? \n> ").lower().replace(" ","")
+    exceptions = ['blooddeathknight','unholydeathknight','frostdeathknight',
+    'havocdemonhunter', 'vengeancedemonhunter','balancedruid','feraldruid',
+    'guardiandruid','restorationdruid','marksmanshiphunter','beastmasteryhunter',
+    'survivalhunter','frostmage','arcanemage','firemage','windwalkermonk',
+    'mistweavermonk','brewmastermonk','holypaladin','retributionpaladin',
+    'protectionpaladin','holypriest','shadowpriest','disciplinepriest',
+    'assassinationrogue','outlawrogue','subletyrogue','elementalshaman',
+    'enhancementshaman','restorationshaman','destructionwarlock','demonologywarlock',
+    'afflictionwarlock','protectionwarrior','furywarrior','armswarrior']
+    if user_delete == "dps_role":
+        if dps_spec in exceptions:
+            db.collection("Top DPS List").document(dps_spec).update({user_delete : firestore.DELETE_FIELD})
+            change_notification(db, f"Removed {user_delete} from {dps_spec}")
+        else:
+            print("Invalid Entry: CHECK YOUR SPELLING")
+    elif user_delete == "damage":
+        if dps_spec in exceptions:
+            db.collection("Top DPS List").document(dps_spec).update({user_delete : firestore.DELETE_FIELD})
+            change_notification(db, f"{user_delete} from {dps_spec} deleted")
+        else:
+            print("Invalid Entry: CHECK YOUR SPELLING")
+
+def queryDPS(db):
+    damage = float(input("Damage value parameter: \n> "))
+    boolean = str(input("Greater than or less than? (> or <)\n-- "))
+    results = db.collection("Top DPS List").where("damage", boolean, damage).get()
+    print()
+    print("Results:")
+    for result in results:
+        data = result.to_dict()
+        print(f"{result.id:<10} {data['damage']}")
+
+def change_notification(db, notification):
+    data = {"notification" : notification, "timestamp" : firestore.SERVER_TIMESTAMP}
+    db.collection("log").add(data)
+
+## Display Roles
+def displayRoles(db):
+    roles_ref = db.collection(u'roles')
+    docs = roles_ref.stream()
+    for doc in docs:
+        print(f'{doc.id} => {doc.to_dict()}')
+## Attempt at simple interface
+userResponse = 999
+while userResponse != "0":
+    print("0. Quit")
+    print("1. View Classes with Specialization")
+    print("2. Display Roles")
+    print("3. View Top DPS")
+    print("4. Add/Update Top DPS class")
+    print("5. Remove Top DPS damage or role")
+    print("6. View DPS above or below value")
+    
+    userResponse = input("Input Selection \n> ")
+    if userResponse == "1":
+        displayClasses(db)
+    elif userResponse == "2":
+        displayRoles(db)
+    elif userResponse == "3":
+        displayTopDPS(db)
+    elif userResponse == "4":
+        updateDPS(db)
+    elif userResponse == "0":
+        pass
+    elif userResponse == "5":
+        deleteDPS(db)
+    elif userResponse == "6":
+        queryDPS(db)
+    else:
+        print("Invalid Response")
+
+
+
 ## The Top DPS List collection, starts with adding a small
 ## dps_Data dictionary.
 # dps_Data = {u'enhancementshaman': 0,
@@ -106,91 +217,6 @@ doc_ref.set({
 
 ## Add Unholy Death Knight to the DPS List
 #db.collection("Top DPS List").document("Specializations").update({"unholydeathknight" : 16737})
-
-## Query for Classes with their specializations
-def displayClasses():
-    ## Display Classes with their Specializations
-        classes_ref = db.collection(u'classes')
-        docs = classes_ref.stream()
-        for doc in docs:
-            print(f'{doc.id} => {doc.to_dict()}')
-
-## View Top DPS
-def displayTopDPS():
-        topDPS_ref = db.collection(u'Top DPS List')
-        docs = topDPS_ref.stream()
-        for doc in docs:
-            print(f'{doc.id} => {doc.to_dict()}')
-## Update DPS function
-def updateDPS():
-    user_input_DPS_change = input("DPS to update \n> ").lower().replace(" ", "")
-    user_input_damage_change = input("Updated damage value \n> ")
-    exceptions = ['blooddeathknight','unholydeathknight','frostdeathknight',
-    'havocdemonhunter', 'vengeancedemonhunter','balancedruid','feraldruid',
-    'guardiandruid','restorationdruid','marksmanshiphunter','beastmasteryhunter',
-    'survivalhunter','frostmage','arcanemage','firemage','windwalkermonk',
-    'mistweavermonk','brewmastermonk','holypaladin','retributionpaladin',
-    'protectionpaladin','holypriest','shadowpriest','disciplinepriest',
-    'assassinationrogue','outlawrogue','subletyrogue','elementalshaman',
-    'enhancementshaman','restorationshaman','destructionwarlock','demonologywarlock',
-    'afflictionwarlock','protectionwarrior','furywarrior','armswarrior']
-    if user_input_DPS_change in exceptions:
-        db.collection("Top DPS List").document("Specializations").update({user_input_DPS_change : user_input_damage_change})
-        print(f"{user_input_DPS_change} class updated with {user_input_damage_change} single target damage.")
-    else:
-        print("Invalid Entry: CHECK YOUR SPELLING")
-## Delete DPS function
-def deleteDPS():
-    user_input_DPS_delete = input("DPS to delete \n> ").lower().replace(" ","")
-    exceptions = ['blooddeathknight','unholydeathknight','frostdeathknight',
-    'havocdemonhunter', 'vengeancedemonhunter','balancedruid','feraldruid',
-    'guardiandruid','restorationdruid','marksmanshiphunter','beastmasteryhunter',
-    'survivalhunter','frostmage','arcanemage','firemage','windwalkermonk',
-    'mistweavermonk','brewmastermonk','holypaladin','retributionpaladin',
-    'protectionpaladin','holypriest','shadowpriest','disciplinepriest',
-    'assassinationrogue','outlawrogue','subletyrogue','elementalshaman',
-    'enhancementshaman','restorationshaman','destructionwarlock','demonologywarlock',
-    'afflictionwarlock','protectionwarrior','furywarrior','armswarrior']
-    if user_input_DPS_delete in exceptions:
-        db.collection("Top DPS List").document("Specializations").update({user_input_DPS_delete : firestore.DELETE_FIELD})
-        print(f"{user_input_DPS_delete} removed from Top DPS List.")
-    else:
-        print("Invalid Entry: CHECK YOUR SPELLING")
-
-
-    
-
-## Display Roles
-def displayRoles():
-    roles_ref = db.collection(u'roles')
-    docs = roles_ref.stream()
-    for doc in docs:
-        print(f'{doc.id} => {doc.to_dict()}')
-## Attempt at simple interface
-userResponse = 999
-while userResponse != "0":
-    print("0. Quit")
-    print("1. View Classes with Specialization")
-    print("2. Display Roles")
-    print("3. View Top DPS")
-    print("4. Add/Update Top DPS class")
-    print("5. Remove Top DPS class")
-    
-    userResponse = input("Input Selection \n> ")
-    if userResponse == "1":
-        displayClasses()
-    elif userResponse == "2":
-        displayRoles()
-    elif userResponse == "3":
-        displayTopDPS()
-    elif userResponse == "4":
-        updateDPS()
-    elif userResponse == "0":
-        pass
-    elif userResponse == "5":
-        deleteDPS()
-    else:
-        print("Invalid Response")
         
 # Display Roles with their associated classes
 # roles_ref = db.collection(u'roles')
