@@ -3,35 +3,33 @@
 This is a little introduction to a Cloud Database where I have 
 stored some data about the classes and specializations from the MMO World of Warcraft.
 
-{Provide a description the software that you wrote and how it integrates with a Cloud Database.  Describe how to use your program.}
+My cloud database has some stored information with some basic details about the various
+classes in World of Warcraft. One storing the specializations for each class and another 
+storing the roles for each class. The third is where I store data that can be manipulated
+like when the damage changes or a role changes. The fourth is a log file where it will 
+automatically keep a log of all of the changes to the Top DPS list.
 
-{Describe your purpose for writing this software.}
+This software is a simple way to keep track of the top dps charts as the game World of Warcraft changes. The most useful table is the Top DPS table, where I can add and change the damage and role data of the various classes. I also added some small exceptions so you can't add random stuff to the Top DPS list other than the actual classes in the game. 
 
-{Provide a link to your YouTube demonstration.  It should be a 4-5 minute demo of the software running, a walkthrough of the code, and a view of the cloud database.}
 
 [Software Demo Video](http://youtube.link.goes.here)
 
 # Cloud Database
 
-{Describe the cloud database you are using.}
-
-{Describe the structure of the database that you created.}
+I am using the Google Firestore Cloud Database system with python as the backend programming language. There are three tables that I am storing data in so far, two are more of static lists that I made while learning how to add items into my database. The Top DPS is the one that I created to be able to be manipulated more than the previous two. The fourth is a log file that stores a timestamp with the data change whenever the DPS list changes. 
 
 # Development Environment
 
-{Describe the tools that you used to develop the software}
-
-{Describe the programming language that you used and any libraries.}
+I used the Google Firestore or Firebase to create my cloud database. I used the python language for the backend programming and used Visual Studio Code for my editor.
 
 # Useful Websites
 
-{Make a list of websites that you found helpful in this project}
-* [Web Site Name](http://url.link.goes.here)
-* [Web Site Name](http://url.link.goes.here)
+* [Google Firebase Tutorials](https://firebase.google.com/docs/firestore)
+* [Firestore Cloud Database Workshop](https://byui-cse.github.io/cse310-course/workshops/Cloud_DB/CSE310_Workshop_Cloud_DB.pdf)
+* [Stack Overflow](https://stackoverflow.com/)
 
 # Future Work
 
-{Make a list of things that you need to fix, improve, and add in the future.}
-* Item 1
-* Item 2
-* Item 3
+* I need to clean up the display interface so it doesn't display so ugly.
+* I plan on designing more intricate queries for the database and having more helpful data to be able to query from.
+* I also want to research into if it is possible to get a working front end interface that is more friendly to non-coders.

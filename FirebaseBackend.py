@@ -89,7 +89,12 @@ def displayClasses(db):
         docs = classes_ref.stream()
         for doc in docs:
             print(f'{doc.id} => {doc.to_dict()}')
-
+## Display Roles
+def displayRoles(db):
+    roles_ref = db.collection(u'roles')
+    docs = roles_ref.stream()
+    for doc in docs:
+        print(f'{doc.id} => {doc.to_dict()}')
 ## View Top DPS
 def displayTopDPS(db):
         topDPS_ref = db.collection(u'Top DPS List')
@@ -156,12 +161,7 @@ def change_notification(db, notification):
     data = {"notification" : notification, "timestamp" : firestore.SERVER_TIMESTAMP}
     db.collection("log").add(data)
 
-## Display Roles
-def displayRoles(db):
-    roles_ref = db.collection(u'roles')
-    docs = roles_ref.stream()
-    for doc in docs:
-        print(f'{doc.id} => {doc.to_dict()}')
+
 ## Attempt at simple interface
 userResponse = 999
 while userResponse != "0":
