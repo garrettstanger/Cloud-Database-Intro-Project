@@ -12,7 +12,8 @@ automatically keep a log of all of the changes to the Top DPS list.
 This software is a simple way to keep track of the top dps charts as the game World of Warcraft changes. The most useful table is the Top DPS table, where I can add and change the damage and role data of the various classes. I also added some small exceptions so you can't add random stuff to the Top DPS list other than the actual classes in the game. 
 
 
-[Software Demo Video](http://youtube.link.goes.here)
+[Demonstration Part 1](https://www.youtube.com/watch?v=Z7sVIE91rQo&ab_channel=GarrettStanger)
+[Demonstration Part 2](https://www.youtube.com/watch?v=7QxkABtm87s&ab_channel=GarrettStanger)
 
 # Cloud Database
 
